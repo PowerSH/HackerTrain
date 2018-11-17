@@ -1,0 +1,22 @@
+from imageai.Detection import ObjectDetection
+import os
+
+execution_path = os.getcwd()
+
+detector = ObjectDetection()
+detector.setModelTypeAsRetinaNet()
+detector.setModelPath(os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.loadModel()
+custom_objects = detector.CustomObjects(person=True, cat=False)
+
+detections = detector.detectCustomObjectsFromImage(input_image=os.path.join(execution_path ,
+                                                                            "test02.jpg"), output_image_path=os.path.join(execution_path , "image_new.png"), custom_objects=custom_objects, minimum_percentage_probability=65)
+
+cnt = 0
+for eachObject in detections:
+    cnt = cnt + 1
+#print(detections)
+
+from IPython.display import Image
+print("카운팅 된 사람의 수 : ", cnt)
+Image("image_new.png")
